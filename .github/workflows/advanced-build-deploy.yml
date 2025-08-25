@@ -1,0 +1,37 @@
+name: Advanced Build & Deploy Voting App
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        component: [web, worker]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./vote-${{ matrix.component }}
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/vote-${{ matrix.component }}:${{ github.sha }}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/vote-${{ matrix.component }}:cache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/vote-${{ matrix.component }}:cache,mode=max
+
+  deploy-staging:
+    needs: build-matrix
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo "${{ secrets.KUBECONFIG_CONTENTS }}" > ~/kube_name
+      - run: cat kube_name
