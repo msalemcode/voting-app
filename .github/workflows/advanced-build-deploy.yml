@@ -23,7 +23,7 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/vote-${{ matrix.component }}:${{ github.sha }}
 
   deploy-staging:
-    needs: build-matrix
+    needs: build
     runs-on: ubuntu-latest
     environment: staging
     steps:
