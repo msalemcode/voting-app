@@ -30,7 +30,7 @@ jobs:
       - name: Build and Push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./vote
           file: ./vote/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/voting-web:latest
@@ -39,7 +39,7 @@ jobs:
       - name: Build and Push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./result
           file: ./result/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/voting-result:latest
@@ -47,7 +47,7 @@ jobs:
       - name: Build and Push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./worker
           file: ./worker/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/voting-worker:latest
