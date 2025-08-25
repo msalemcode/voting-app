@@ -23,7 +23,7 @@ jobs:
           context: ./vote-${{ matrix.component }}
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/vote-${{ matrix.component }}:${{ github.sha }}
-          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/vote-${{ matrix.component }}:cache
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/${{ matrix.component }}:cache
           cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/vote-${{ matrix.component }}:cache,mode=max
 
   deploy-staging:
