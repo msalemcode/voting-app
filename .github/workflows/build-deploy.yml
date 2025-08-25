@@ -52,8 +52,3 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/voting-worker:latest
 
-
-
-      # 5. Show pushed image info
-      - name: Show Docker image info
-        run: docker images | grep voting-app
